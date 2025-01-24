@@ -1,0 +1,12 @@
+opencv-python
+cv2_enumerate_cameras==1.1.15
+insightface
+psutil
+tk==0.1.0
+customtkinter==5.2.2
+onnxruntime-gpu
+# tensorflow==2.12.1
+tensorflow
+opennsfw2
+tqdm
+tkinterdnd2==0.4.2
