@@ -25,3 +25,4 @@ models/DMDNet.pth
 faceswap/
 .vscode/
 /exp_data
+switch_states.json
