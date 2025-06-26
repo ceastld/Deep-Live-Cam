@@ -1,4 +1,4 @@
-module load cuda/11.7.1_515.65.01
+# module load cuda/11.7.1_515.65.01
 
 conda create -n dlc python==3.10 -y
 conda activate dlc
