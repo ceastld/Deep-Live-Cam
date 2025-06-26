@@ -26,3 +26,4 @@ faceswap/
 .vscode/
 /exp_data
 switch_states.json
+data/
