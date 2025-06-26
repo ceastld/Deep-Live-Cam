@@ -397,7 +397,7 @@ def analyze_target(start: Callable[[], None], root: ctk.CTk):
         return
 
     if modules.globals.map_faces:
-        modules.globals.souce_target_map = []
+        modules.globals.source_target_map = []
 
         if is_image(modules.globals.target_path):
             update_status("Getting unique faces")
@@ -406,8 +406,8 @@ def analyze_target(start: Callable[[], None], root: ctk.CTk):
             update_status("Getting unique faces")
             get_unique_faces_from_target_video()
 
-        if len(modules.globals.souce_target_map) > 0:
-            create_source_target_popup(start, root, modules.globals.souce_target_map)
+        if len(modules.globals.source_target_map) > 0:
+            create_source_target_popup(start, root, modules.globals.source_target_map)
         else:
             update_status("No faces found in target")
     else:
@@ -429,7 +429,7 @@ def create_source_target_popup(
             POPUP.destroy()
             select_output_path(start)
         else:
-            update_pop_status("Atleast 1 source with target is required!")
+            update_pop_status("At least 1 source with target is required!")
 
     scrollable_frame = ctk.CTkScrollableFrame(
         POPUP, width=POPUP_SCROLL_WIDTH, height=POPUP_SCROLL_HEIGHT
@@ -489,7 +489,7 @@ def update_popup_source(
     global source_label_dict
 
     source_path = ctk.filedialog.askopenfilename(
-        title=_("select an source image"),
+        title=_("select a source image"),
         initialdir=RECENT_DIRECTORY_SOURCE,
         filetypes=[img_ft],
     )
@@ -584,7 +584,7 @@ def select_source_path() -> None:
 
     PREVIEW.withdraw()
     source_path = ctk.filedialog.askopenfilename(
-        title=_("select an source image"),
+        title=_("select a source image"),
         initialdir=RECENT_DIRECTORY_SOURCE,
         filetypes=[img_ft],
     )
@@ -627,7 +627,7 @@ def select_target_path() -> None:
 
     PREVIEW.withdraw()
     target_path = ctk.filedialog.askopenfilename(
-        title=_("select an target image or video"),
+        title=_("select a target image or video"),
         initialdir=RECENT_DIRECTORY_TARGET,
         filetypes=[img_ft, vid_ft],
     )
@@ -696,17 +696,21 @@ def check_and_ignore_nsfw(target, destroy: Callable = None) -> bool:
 
 
 def fit_image_to_size(image, width: int, height: int):
-    if width is None and height is None:
+    if width is None or height is None or width <= 0 or height <= 0:
         return image
     h, w, _ = image.shape
     ratio_h = 0.0
     ratio_w = 0.0
-    if width > height:
-        ratio_h = height / h
-    else:
-        ratio_w = width / w
-    ratio = max(ratio_w, ratio_h)
-    new_size = (int(ratio * w), int(ratio * h))
+    ratio_w = width / w
+    ratio_h = height / h
+    # Use the smaller ratio to ensure the image fits within the given dimensions
+    ratio = min(ratio_w, ratio_h)
+    
+    # Compute new dimensions, ensuring they're at least 1 pixel
+    new_width = max(1, int(ratio * w))
+    new_height = max(1, int(ratio * h))
+    new_size = (new_width, new_height)
+
     return cv2.resize(image, dsize=new_size)
 
 
@@ -787,9 +791,9 @@ def webcam_preview(root: ctk.CTk, camera_index: int):
             return
         create_webcam_preview(camera_index)
     else:
-        modules.globals.souce_target_map = []
+        modules.globals.source_target_map = []
         create_source_target_popup_for_webcam(
-            root, modules.globals.souce_target_map, camera_index
+            root, modules.globals.source_target_map, camera_index
         )
 
 
@@ -1104,7 +1108,7 @@ def update_webcam_source(
     global source_label_dict_live
 
     source_path = ctk.filedialog.askopenfilename(
-        title=_("select an source image"),
+        title=_("select a source image"),
         initialdir=RECENT_DIRECTORY_SOURCE,
         filetypes=[img_ft],
     )
@@ -1156,7 +1160,7 @@ def update_webcam_target(
     global target_label_dict_live
 
     target_path = ctk.filedialog.askopenfilename(
-        title=_("select an target image"),
+        title=_("select a target image"),
         initialdir=RECENT_DIRECTORY_SOURCE,
         filetypes=[img_ft],
     )
