@@ -2,7 +2,7 @@
 
 conda create -n dlc python==3.10 -y
 conda activate dlc
-uv pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
 # pip install tensorflow #2.18
 conda install -c anaconda cudnn # cudnn 9.x
@@ -16,3 +16,6 @@ wget https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_Resn
 wget https://github.com/xinntao/facexlib/releases/download/v0.2.2/parsing_parsenet.pth
 
 
+cd models
+wget https://huggingface.co/hacksider/deep-live-cam/resolve/main/inswapper_128_fp16.onnx
+wget https://huggingface.co/hacksider/deep-live-cam/resolve/main/GFPGANv1.4.pth

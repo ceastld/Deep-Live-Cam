@@ -33,4 +33,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_video("girl.png","obama.mp4","output.mp4")
